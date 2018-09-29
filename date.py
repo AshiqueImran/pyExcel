@@ -66,5 +66,19 @@ time='23:12'
 # print(f_type_parts[0]);
 # print(f_type_parts[1]);
 # print(f_type_parts[2]);
-print(str(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11')))
+#print(str(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11')))
 
+dates=[]
+
+dates.append(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11'))
+dates.append(strToDateTime(string,time)-strToDateTime('8/1/2018','23:10'))
+dates.append(strToDateTime(string,time)-strToDateTime('8/2/2018','23:11'))
+
+print(max(dates))
+print(dates.index(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11')))
+
+
+if 'hello' in dates :
+	print(dates.index('hello'))
+else:
+	print('does not exist')
