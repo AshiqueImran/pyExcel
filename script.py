@@ -8,7 +8,10 @@ import datetime
 total_row_count_nar=0
 narRowCounter=0
 narFile='2018.csv'
-powerAlarm1='Power Alarm_W33_2018.csv'
+powerAlarm1='Power Alarm_W32_2018.csv'
+powerAlarm2='Power Alarm_W33_2018.csv'
+powerAlarm3='Power Alarm_W34_2018.csv'
+powerAlarm4='Power Alarm_W35_2018.csv'
 objNar=[]
 
 def strToDateTime(dateString,timeString):
@@ -52,20 +55,21 @@ def strToDateTime(dateString,timeString):
 		timeParts=timeString.split(':')
 		hour=int(timeParts[0])
 		minute=int(timeParts[1])
-	return datetime.datetime(year, month, day,hour,minute)
+
+	return datetime.datetime(year, month, day,hour,minute,00)
+
+defaultTimeZero=strToDateTime('8/1/2018','23:11')-strToDateTime('8/1/2018','23:11') #To get zero time for initial backUp value in class 
 
 #class starts
 
 class Site:
-	backUp=0
+	backUp=defaultTimeZero
 	code=None
 	office=None
 	occurredTime=None
 	occurredDate=None
-	appearDate=None
-	appearTime=None
-	ceasedDate=None
-	ceasedtime=None
+	appearDateTime=None
+	ceasedDateTime=None
 
 	def __init__(self, code,office,occurredDate,occurredTime): #constructor
 	        self.code = code
@@ -75,32 +79,24 @@ class Site:
 
 
 	def display(self): #Object Methods
-	    print("code: "+str(self.code)+", office: "+str(self.office)+", occurredDate: "+str(self.occurredDate)+", occurredTime: "+str(self.occurredTime)+", backUp: "+str(self.backUp))
+	    print("code: "+str(self.code)+", appear Date Time: "+str(self.appearDateTime)+", occurredDate: "+str(self.occurredDate)+", occurredTime: "+str(self.occurredTime)+", ceased Date Time: "+str(self.ceasedDateTime)+", backUp: "+str(self.backUp))
 
-
-	def addAppearTimeDate(self,appearDate,appearTime):
-		if self.appearDate == None:
-			self.appearDate=appearDate
-		if self.appearTime == None:
-			self.appearTime=appearTime
-			#mytime = dt.datetime.strptime(appearTime,'%H%M%S').time()
 	def getBackupTime(self,appearDate,appearTime,ceasedDate,ceasedtime):
 		TotalAppareTime=strToDateTime(appearDate,appearTime)
 		TotalCeasedTime=strToDateTime(ceasedDate,ceasedtime)
 		TotalOccurredTime=strToDateTime(self.occurredDate,self.occurredTime)
 		loadShedding=TotalCeasedTime-TotalAppareTime
 		onBettary=TotalOccurredTime-TotalAppareTime
-		#print('loadshheddign: '+str( loadShedding))
-		#print('onbattery: '+str(onBettary))
+		# print('loadshheddign: '+str( loadShedding))
+		# print('onbattery: '+str(onBettary))
 		if TotalAppareTime<=TotalOccurredTime and TotalCeasedTime>=TotalOccurredTime:
-			approxBackUp=onBettary
-		else:
-			#approxBackUp=loadShedding 		#if I take load sheddind as back up time
-			approxBackUp=datetime.timedelta(0)
-		if self.backUp==None:
-			self.backUp=approxBackUp
-		elif approxBackUp>datetime.timedelta(self.backUp):
-			self.backUp=approxBackUp
+			self.backUp=onBettary
+			self.ceasedDateTime=TotalCeasedTime
+			self.appearDateTime=TotalAppareTime
+		# else:
+		# 	self.backUp=loadShedding 		#if I take load sheddind as back up time
+		# 	self.ceasedDateTime=TotalCeasedTime
+		# 	self.appearDateTime=TotalAppareTime
 
 #class ends
 
@@ -116,20 +112,40 @@ with open(narFile,'rU') as csvfile:
     for row in readCSV:
 		narRowCounter=narRowCounter+ 1   
 	    	if row[17]=='Site Down' and row[14]=='Power' and row[12]!= ' ' and row[12]!= '0':
-	    		os.system('cls')
+	    		#os.system('cls')
 		        #print(row)
 		        #print(row[17])
 		       	#print(row[0],row[1],row[17], row[14])
-		        #print(str(narRowCounter)+"row fetched out of: "+str(total_row_count_nar))
+		        print(str(narRowCounter)+"row fetched out of: "+str(total_row_count_nar))
 		        objNar.append(Site(row[1],row[3],row[8],row[9]))
 		if narRowCounter>200:
 		    break
-flag=1;
+
+os.system('cls')
+flag=1
 with open(powerAlarm1,'rU') as csvfile:
 	readCSV = csv.reader(csvfile, delimiter=',')
 	csvfile.next()
 	for row in readCSV:
-		print(flag)
+		#os.system('cls')
+		print(powerAlarm1+": "+str(flag)+" code- "+str(row[0]))
+		flag=flag+1
+		if row[12]=='MAINS FAIL' and row[10]!='0':	
+			# print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
+			for obj in objNar:
+				if obj.code==row[0]:
+					# print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
+					obj.getBackupTime(str(row[6]),str(row[7]),str(row[8]),str(row[9]))
+					#break
+
+os.system('cls')
+flag=1
+with open(powerAlarm2,'rU') as csvfile:
+	readCSV = csv.reader(csvfile, delimiter=',')
+	csvfile.next()
+	for row in readCSV:
+		#os.system('cls')
+		print(powerAlarm2+": "+str(flag))
 		flag=flag+1
 		if row[12]=='MAINS FAIL' and row[10]!='0':	
 			#print(row[0],row[1],row[12])
@@ -138,18 +154,49 @@ with open(powerAlarm1,'rU') as csvfile:
 					obj.getBackupTime(str(row[6]),str(row[7]),str(row[8]),str(row[9]))
 					#print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
 					#break
+os.system('cls')
+flag=1;
+with open(powerAlarm3,'rU') as csvfile:
+	readCSV = csv.reader(csvfile, delimiter=',')
+	csvfile.next()
+	for row in readCSV:
+		#os.system('cls')
+		print(powerAlarm3+": "+str(flag)+" code- "+str(row[0]))
+		flag=flag+1
+		if row[12]=='MAINS FAIL' and row[10]!='0':	
+			#print(row[0],row[1],row[12])
+			for obj in objNar:
+				if obj.code==row[0]:
+					obj.getBackupTime(str(row[6]),str(row[7]),str(row[8]),str(row[9]))
+					#print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
+					#break
+os.system('cls')
+flag=1;
+with open(powerAlarm4,'rU') as csvfile:
+	readCSV = csv.reader(csvfile, delimiter=',')
+	csvfile.next()
+	for row in readCSV:
+		#os.system('cls')
+		print(powerAlarm4+": "+str(flag)+" code- "+str(row[0]))
+		flag=flag+1
+		if row[12]=='MAINS FAIL' and row[10]!='0':	
+			#print(row[0],row[1],row[12])
+			for obj in objNar:
+				if obj.code==row[0]:
+					obj.getBackupTime(str(row[6]),str(row[7]),str(row[8]),str(row[9]))
+					#print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
+					#break					
 
-
-# s1 = Site('DHK_X4283','Gazipur','8/4/2018','16:00')
-#s1.addAppearTimeDate('8/30/2018',time.asctime( time.localtime(time.time()) ));
-#s1.addAppearTimeDate('8/30/2018','2:37:31 PM')
+# s1 = Site('DHK_X4283','Gazipur','8/7/2018','16:00')
 #print(s1.office)
-# s1.getBackupTime('8/1/2018','14:00','8/1/2018','17:00');
+# s1.getBackupTime('8/1/2018','10:00','8/1/2018','17:03');
 # s1.display()
-
+# s2 = Site('CTG_X4283','Chittagong','8/1/2018','16:00')
+# s2.getBackupTime('8/1/2018','14:00','8/2/2018','17:00');
+# s2.display()
 
 #objNar.append(Site('DHK_X4283','Gazipur','8/28/2018','2:37:31 PM'))
 # objNar.append(Site('raj_X4283','Gazipur','8/28/2018','2:37:31 PM'))
 
 for obj in objNar:
-    print (obj.code,obj.office,obj.occurredDate,obj.occurredTime,obj.backUp)
+    obj.display()

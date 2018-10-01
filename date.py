@@ -66,7 +66,12 @@ time='23:12'
 # print(f_type_parts[0]);
 # print(f_type_parts[1]);
 # print(f_type_parts[2]);
-#print(str(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11')))
+# print(str(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11')))
+# print(str(type(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11'))))
+# subTimes=strToDateTime('1-Aug-18','23:11')-strToDateTime('8/2/2018','23:11')
+
+# print(subTimes)
+
 
 dates=[]
 
@@ -84,15 +89,22 @@ dates=[]
 # 	print('does not exist')
 
 
-for i in range(10):
-	dates.append(i+100)
+# for i in range(10):
+# 	dates.append(i+100)
 
-if 109 in dates :
-	print(dates.index(109))
-	dates[dates.index(109)]=8888
+# if 109 in dates :
+# 	print(dates.index(109))
+# 	dates[dates.index(109)]=8888
 
-for i in dates:
-	print[i]
+# for i in dates:
+# 	print[i]
+
+with open('Date.csv', 'wb') as myfile:
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    wr.writerow(["sl","name"]) #heading
+
+    wr.writerow(['1','go']) #rows after heading
+    wr.writerow(['2','come']) #rows after heading
 
 
 
