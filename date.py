@@ -75,6 +75,14 @@ time='23:12'
 
 dates=[]
 
+class date1:
+		ResultCode=None
+		ResultBackUp=None
+
+		def __init__(self,name,netBackUps):
+			self.ResultCode=name
+			self.ResultBackUp=netBackUps
+
 # dates.append(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11'))
 # dates.append(strToDateTime(string,time)-strToDateTime('8/1/2018','23:10'))
 # dates.append(strToDateTime(string,time)-strToDateTime('8/2/2018','23:11'))
@@ -96,15 +104,53 @@ dates=[]
 # 	print(dates.index(109))
 # 	dates[dates.index(109)]=8888
 
+dates.append(date1("ananda",41))
+dates.append(date1("ashik",100))
+dates.append(date1("imran",433))
+dates.append(date1("ashik",133))
+dates.append(date1("imran",403))
+dates.append(date1("sazzed",44))
+dates.append(date1("sazzed",41))
+dates.append(date1("sazzed",46))
+dates.append(date1("sazzed",44))
+dates.append(date1("rahman",44))
+dates.append(date1("ananda",43))
+dates.append(date1("sazzed",44))
+
+netCodes=[]
+netBackUps=[]
+for i in dates:
+	for j in dates:
+		if i.ResultCode== j .ResultCode:
+			if i.ResultCode in netCodes:
+				arrIndex=netCodes.index(i.ResultCode)
+				if netBackUps[arrIndex]<=j.ResultBackUp:
+					netBackUps[arrIndex]=j.ResultBackUp					
+			else:
+				netCodes.append(i.ResultCode)
+				netBackUps.append(i.ResultBackUp)
+
+
+
+#dates.pop(2)
+
+i=0
+while i<len(netCodes):
+	print(netCodes[i])
+	print(netBackUps[i])
+	i=i+1
+
 # for i in dates:
 # 	print[i]
 
-with open('Date.csv', 'wb') as myfile:
-    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    wr.writerow(["sl","name"]) #heading
+# with open('Date.csv', 'wb') as myfile:
+#     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+#     wr.writerow(["sl","name"]) #heading
 
-    wr.writerow(['1','go']) #rows after heading
-    wr.writerow(['2','come']) #rows after heading
+#     wr.writerow(['1','go']) #rows after heading
+#     wr.writerow(['2','come']) #rows after heading
+
+
 
 
 
