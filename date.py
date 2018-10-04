@@ -114,23 +114,30 @@ dates.append(date1("sazzed",41))
 dates.append(date1("sazzed",46))
 dates.append(date1("sazzed",44))
 dates.append(date1("rahman",44))
-dates.append(date1("ananda",43))
+dates.append(date1("ananda",100))
 dates.append(date1("sazzed",44))
 
 netCodes=[]
 netBackUps=[]
+# for i in dates:
+# 	for j in dates:
+# 		if i.ResultCode== j .ResultCode:
+# 			if i.ResultCode in netCodes:
+# 				arrIndex=netCodes.index(i.ResultCode)
+# 				if netBackUps[arrIndex]<=j.ResultBackUp:
+# 					netBackUps[arrIndex]=j.ResultBackUp					
+# 			else:
+# 				netCodes.append(i.ResultCode)
+# 				netBackUps.append(i.ResultBackUp)
+
 for i in dates:
-	for j in dates:
-		if i.ResultCode== j .ResultCode:
-			if i.ResultCode in netCodes:
-				arrIndex=netCodes.index(i.ResultCode)
-				if netBackUps[arrIndex]<=j.ResultBackUp:
-					netBackUps[arrIndex]=j.ResultBackUp					
-			else:
-				netCodes.append(i.ResultCode)
-				netBackUps.append(i.ResultBackUp)
-
-
+	if i.ResultCode in netCodes:
+		arrIndex=netCodes.index(i.ResultCode)
+		if netBackUps[arrIndex]<=i.ResultBackUp:
+			netBackUps[arrIndex]=i.ResultBackUp
+	else:
+		netCodes.append(i.ResultCode)
+		netBackUps.append(i.ResultBackUp)
 
 #dates.pop(2)
 

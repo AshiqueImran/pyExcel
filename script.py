@@ -168,12 +168,32 @@ with open(powerAlarm1,'rU') as csvfile:
 # for obj in resultSites:
 #     obj.displayResult()
 
-with open('Date.csv', 'wb') as myfile:
-    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    wr.writerow(["code","office","occurredDateTime","appearDateTime","ceasedDateTime","backUpTime"]) #heading
+# with open('Date.csv', 'wb') as myfile:
+#     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+#     wr.writerow(["code","office","occurredDateTime","appearDateTime","ceasedDateTime","backUpTime"]) #heading
 
-    for obj in resultSites:
-    	wr.writerow([obj.ResultCode,obj.ResultOffice,ResultOccurredDateTime,ResultAppearDateTime,ResultCeasedDateTime,ResultBackUp]) #rows after heading
+#     for obj in resultSites:
+#     	wr.writerow([obj.ResultCode,obj.ResultOffice,ResultOccurredDateTime,ResultAppearDateTime,ResultCeasedDateTime,ResultBackUp]) #rows after heading
+
+
+netCodes=[]
+netBackUps=[]
+
+for i in resultSites:
+	if i.ResultCode in netCodes:
+		arrIndex=netCodes.index(i.ResultCode)
+		if netBackUps[arrIndex]<=i.ResultBackUp:
+			netBackUps[arrIndex]=i.ResultBackUp
+	else:
+		netCodes.append(i.ResultCode)
+		netBackUps.append(i.ResultBackUp)
+	print("fetching the maximum value of each site ... ")
+
+i=0
+while i<len(netCodes):
+	print(netCodes[i])
+	print(netBackUps[i])
+	i=i+1
 
 print(len(objNar))
 print(len(resultSites))
