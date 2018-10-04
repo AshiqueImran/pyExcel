@@ -76,6 +76,7 @@ def getBackupTime(occurredDate,occurredTime,appearDate,appearTime,ceasedDate,cea
 		return loadShedding 		#if I take load sheddind as back up time
 
 defaultTimeZero=strToDateTime('8/1/2018','23:11')-strToDateTime('8/1/2018','23:11') #To get zero time for initial backUp value in class 
+limitTimes=strToDateTime('2-Aug-18','09:00')-strToDateTime('8/2/2018','01:00') #Time limit
 
 #class starts
 class ResultSite:
@@ -156,24 +157,11 @@ with open(powerAlarm1,'rU') as csvfile:
 					#print(powerAlarm1+": "+str(flag)+" code- "+str(row[0]))
 					# print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
 					backUpTime=getBackupTime(obj.occurredDate,obj.occurredTime,str(row[6]),str(row[7]),str(row[8]),str(row[9]))
-					occurredDateTime=strToDateTime(obj.occurredDate,obj.occurredTime)
-					appearDateTime=strToDateTime(str(row[6]),str(row[7]))
-					ceasedDateTime=strToDateTime(str(row[8]),str(row[9]))
-					resultSites.append(ResultSite(obj.code,obj.office,occurredDateTime,appearDateTime,ceasedDateTime,backUpTime))
-
-
-# for obj in objNar:
-#     obj.display()
-
-# for obj in resultSites:
-#     obj.displayResult()
-
-# with open('Date.csv', 'wb') as myfile:
-#     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-#     wr.writerow(["code","office","occurredDateTime","appearDateTime","ceasedDateTime","backUpTime"]) #heading
-
-#     for obj in resultSites:
-#     	wr.writerow([obj.ResultCode,obj.ResultOffice,ResultOccurredDateTime,ResultAppearDateTime,ResultCeasedDateTime,ResultBackUp]) #rows after heading
+					if backUpTime<limitTimes:
+						occurredDateTime=strToDateTime(obj.occurredDate,obj.occurredTime)
+						appearDateTime=strToDateTime(str(row[6]),str(row[7]))
+						ceasedDateTime=strToDateTime(str(row[8]),str(row[9]))
+						resultSites.append(ResultSite(obj.code,obj.office,occurredDateTime,appearDateTime,ceasedDateTime,backUpTime))
 
 
 netCodes=[]
@@ -189,11 +177,16 @@ for i in resultSites:
 		netBackUps.append(i.ResultBackUp)
 	print("fetching the maximum value of each site ... ")
 
+
 i=0
-while i<len(netCodes):
-	print(netCodes[i])
-	print(netBackUps[i])
-	i=i+1
+with open('Date.csv', 'wb') as myfile:
+	wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    	wr.writerow(["site","backup"])
+    	while i<len(netCodes):
+	    	print(netCodes[i])
+	    	print(netBackUps[i])
+	    	wr.writerow([str(netCodes[i]),str(netBackUps[i])]) 
+	    	i=i+1
 
 print(len(objNar))
 print(len(resultSites))
