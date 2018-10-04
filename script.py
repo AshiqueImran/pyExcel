@@ -7,11 +7,22 @@ import datetime
 
 total_row_count_nar=0
 narRowCounter=0
-narFile='2018.csv'
-powerAlarm1='Power Alarm_W32_2018.csv'
-powerAlarm2='Power Alarm_W33_2018.csv'
-powerAlarm3='Power Alarm_W34_2018.csv'
-powerAlarm4='Power Alarm_W35_2018.csv'
+
+narFiles=[]
+powerAlarms=[]
+
+#add NAR files
+
+narFiles.append('2018.csv')
+
+#add power alarms file
+powerAlarms.append('Power Alarm_W32_2018.csv')
+powerAlarms.append('Power Alarm_W33_2018.csv')
+powerAlarms.append('Power Alarm_W34_2018.csv')
+powerAlarms.append('Power Alarm_W35_2018.csv')
+
+
+
 objNar=[]
 resultSites=[]
 
@@ -120,50 +131,52 @@ class Site:
 
 #class ends
 
-with open(narFile,'rU') as csvfileForRow:
-    readCSV = csv.reader(csvfileForRow, delimiter=',')
-    csvfileForRow.next()
-    total_row_count_nar = len(list(readCSV))
+for narFile in narFiles:
+
+	with open(narFile,'rU') as csvfileForRow:
+	    readCSV = csv.reader(csvfileForRow, delimiter=',')
+	    csvfileForRow.next()
+	    total_row_count_nar = len(list(readCSV))
 
 
-with open(narFile,'rU') as csvfile:
-    readCSV = csv.reader(csvfile, delimiter=',')
-    csvfile.next()
-    for row in readCSV:
-		narRowCounter=narRowCounter+ 1   
-	    	if row[17]=='Site Down' and row[14]=='Power' and row[12]!= ' ' and row[12]!= '0':
-	    		#os.system('cls')
-		        #print(row)
-		        #print(row[17])
-		       	#print(row[0],row[1],row[17], row[14])
-		        print(str(narRowCounter)+"row fetched out of: "+str(total_row_count_nar))
-		        objNar.append(Site(row[1],row[3],row[8],row[9]))
-		# if narRowCounter>2000:
-		#     break
+	with open(narFile,'rU') as csvfile:
+	    readCSV = csv.reader(csvfile, delimiter=',')
+	    csvfile.next()
+	    for row in readCSV:
+			narRowCounter=narRowCounter+ 1   
+		    	if row[17]=='Site Down' and row[14]=='Power' and row[12]!= ' ' and row[12]!= '0':
+		    		#os.system('cls')
+			        #print(row)
+			        #print(row[17])
+			       	#print(row[0],row[1],row[17], row[14])
+			        print(str(narRowCounter)+"row fetched out of: "+str(total_row_count_nar))
+			        objNar.append(Site(row[1],row[3],row[8],row[9]))
+			# if narRowCounter>2000:
+			#     break
 
-#os.system('cls')
-flag=1
-with open(powerAlarm1,'rU') as csvfile:
-	readCSV = csv.reader(csvfile, delimiter=',')
-	csvfile.next()
-	for row in readCSV:
-		#os.system('cls')
-		print(powerAlarm1+": "+str(flag)+" code- "+str(row[0]))
-		flag=flag+1
-		if row[12]=='MAINS FAIL' and row[10]!='0':	
-			# print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
-			for obj in objNar:
-				if obj.code==row[0]:
-					#print(powerAlarm1+": "+str(flag)+" code- "+str(row[0]))
-					# print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
-					backUpTime=getBackupTime(obj.occurredDate,obj.occurredTime,str(row[6]),str(row[7]),str(row[8]),str(row[9]))
-					if backUpTime<limitTimes:
-						occurredDateTime=strToDateTime(obj.occurredDate,obj.occurredTime)
-						appearDateTime=strToDateTime(str(row[6]),str(row[7]))
-						ceasedDateTime=strToDateTime(str(row[8]),str(row[9]))
-						resultSites.append(ResultSite(obj.code,obj.office,occurredDateTime,appearDateTime,ceasedDateTime,backUpTime))
-
-
+for powerAlarm1 in powerAlarms:
+	#os.system('cls')
+	flag=1
+	with open(powerAlarm1,'rU') as csvfile:
+		readCSV = csv.reader(csvfile, delimiter=',')
+		csvfile.next()
+		for row in readCSV:
+			#os.system('cls')
+			print(powerAlarm1+": "+str(flag)+" code- "+str(row[0]))
+			flag=flag+1
+			if row[12]=='MAINS FAIL' and row[10]!='0':	
+				# print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
+				for obj in objNar:
+					if obj.code==row[0]:
+						#print(powerAlarm1+": "+str(flag)+" code- "+str(row[0]))
+						# print(row[0],row[1],row[6],row[7],row[8],row[9],row[12])
+						backUpTime=getBackupTime(obj.occurredDate,obj.occurredTime,str(row[6]),str(row[7]),str(row[8]),str(row[9]))
+						if backUpTime<limitTimes:
+							occurredDateTime=strToDateTime(obj.occurredDate,obj.occurredTime)
+							appearDateTime=strToDateTime(str(row[6]),str(row[7]))
+							ceasedDateTime=strToDateTime(str(row[8]),str(row[9]))
+							resultSites.append(ResultSite(obj.code,obj.office,occurredDateTime,appearDateTime,ceasedDateTime,backUpTime))
+						
 netCodes=[]
 netBackUps=[]
 
@@ -179,7 +192,7 @@ for i in resultSites:
 
 
 i=0
-with open('Date.csv', 'wb') as myfile:
+with open('Date_sep_aug.csv', 'wb') as myfile:
 	wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     	wr.writerow(["site","backup"])
     	while i<len(netCodes):
