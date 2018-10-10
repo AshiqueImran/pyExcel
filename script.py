@@ -87,7 +87,7 @@ def getBackupTime(occurredDate,occurredTime,appearDate,appearTime,ceasedDate,cea
 		return loadShedding 		#if I take load sheddind as back up time
 
 defaultTimeZero=strToDateTime('8/1/2018','23:11')-strToDateTime('8/1/2018','23:11') #To get zero time for initial backUp value in class 
-limitTimes=strToDateTime('2-Aug-18','09:00')-strToDateTime('8/2/2018','01:00') #Time limit
+limitTimes=strToDateTime('2-Aug-18','09:00')-strToDateTime('8/2/2018','03:00') #Time limit
 
 #class starts
 class ResultSite:
