@@ -68,7 +68,7 @@ time='23:12'
 # print(f_type_parts[2]);
 # print(str(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11')))
 # print(str(type(strToDateTime(string,time)-strToDateTime('8/1/2018','23:11'))))
-subTimes=strToDateTime('2-Aug-18','09:00')-strToDateTime('8/2/2018','01:00')
+subTimes=strToDateTime('2-Aug-18','21:00')-strToDateTime('8/2/2018','01:00')
 
 print(subTimes)
 
@@ -104,21 +104,21 @@ class date1:
 # 	print(dates.index(109))
 # 	dates[dates.index(109)]=8888
 
-dates.append(date1("ananda",41))
-dates.append(date1("ashik",100))
-dates.append(date1("imran",433))
-dates.append(date1("ashik",133))
-dates.append(date1("imran",403))
-dates.append(date1("sazzed",44))
-dates.append(date1("sazzed",41))
-dates.append(date1("sazzed",46))
-dates.append(date1("sazzed",44))
-dates.append(date1("rahman",44))
-dates.append(date1("ananda",100))
-dates.append(date1("sazzed",44))
+# dates.append(date1("ananda",41))
+# dates.append(date1("ashik",100))
+# dates.append(date1("imran",433))
+# dates.append(date1("ashik",133))
+# dates.append(date1("imran",403))
+# dates.append(date1("sazzed",44))
+# dates.append(date1("sazzed",41))
+# dates.append(date1("sazzed",46))
+# dates.append(date1("sazzed",44))
+# dates.append(date1("rahman",44))
+# dates.append(date1("ananda",100))
+# dates.append(date1("sazzed",44))
 
-netCodes=[]
-netBackUps=[]
+# netCodes=[]
+# netBackUps=[]
 # for i in dates:
 # 	for j in dates:
 # 		if i.ResultCode== j .ResultCode:
@@ -130,14 +130,14 @@ netBackUps=[]
 # 				netCodes.append(i.ResultCode)
 # 				netBackUps.append(i.ResultBackUp)
 
-for i in dates:
-	if i.ResultCode in netCodes:
-		arrIndex=netCodes.index(i.ResultCode)
-		if netBackUps[arrIndex]<=i.ResultBackUp:
-			netBackUps[arrIndex]=i.ResultBackUp
-	else:
-		netCodes.append(i.ResultCode)
-		netBackUps.append(i.ResultBackUp)
+# for i in dates:
+# 	if i.ResultCode in netCodes:
+# 		arrIndex=netCodes.index(i.ResultCode)
+# 		if netBackUps[arrIndex]<=i.ResultBackUp:
+# 			netBackUps[arrIndex]=i.ResultBackUp
+# 	else:
+# 		netCodes.append(i.ResultCode)
+# 		netBackUps.append(i.ResultBackUp)
 
 #dates.pop(2)
 
@@ -149,15 +149,15 @@ for i in dates:
 
 # for i in dates:
 # 	print[i]
-i=0
-with open('Date.csv', 'wb') as myfile:
-	wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    	wr.writerow(["site","backup"])
-    	while i<len(netCodes):
-	    	print(netCodes[i])
-	    	print(netBackUps[i])
-	    	wr.writerow([str(netCodes[i]),str(netBackUps[i])]) 
-	    	i=i+1
+# i=0
+# with open('Date.csv', 'wb') as myfile:
+# 	wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+#     	wr.writerow(["site","backup"])
+#     	while i<len(netCodes):
+# 	    	print(netCodes[i])
+# 	    	print(netBackUps[i])
+# 	    	wr.writerow([str(netCodes[i]),str(netBackUps[i])]) 
+# 	    	i=i+1
 
 
 
