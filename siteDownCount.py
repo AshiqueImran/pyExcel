@@ -7,6 +7,8 @@ netCodes=[]
 counts=[]
 narRowCounter=0
 
+outputFileName='Result_May_2018.csv'
+
 narFiles.append('2018.csv')
 
 
@@ -37,7 +39,7 @@ for narFile in narFiles:
 			        	counts.append(1)
 
 i=0
-with open('site_down_count.csv', 'wb') as myfile:
+with open(outputFileName, 'wb') as myfile:
 	wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     	wr.writerow(["site","counts"])
     	while i<len(netCodes):

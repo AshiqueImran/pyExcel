@@ -192,7 +192,7 @@ for i in resultSites:
 
 
 i=0
-with open('Date_sep_aug.csv', 'wb') as myfile:
+with open('Date_aug.csv', 'wb') as myfile:
 	wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     	wr.writerow(["site","backup"])
     	while i<len(netCodes):
